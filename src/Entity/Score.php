@@ -17,11 +17,11 @@ class Score
     private ?string $score = null;
 
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeImmutable $created_at;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\ManyToOne(inversedBy: 'scores')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $game_id = null;
+    private ?Game $gameId = null;
 
     public function getId(): ?int
     {
@@ -42,24 +42,24 @@ class Score
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getGameId(): ?Game
     {
-        return $this->game_id;
+        return $this->gameId;
     }
 
-    public function setGameId(?Game $game_id): static
+    public function setGameId(?Game $gameId): static
     {
-        $this->game_id = $game_id;
+        $this->gameId = $gameId;
 
         return $this;
     }

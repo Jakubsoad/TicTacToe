@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\Board;
+use App\Entity\BoardField;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Board>
+ * @extends ServiceEntityRepository<BoardField>
  */
-class BoardRepository extends ServiceEntityRepository
+class BoardFieldRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Board::class);
+        parent::__construct($registry, BoardField::class);
     }
 
     //    /**

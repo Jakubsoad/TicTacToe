@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\BoardRepository;
+use App\Repository\BoardFieldRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BoardRepository::class)]
+#[ORM\Entity(repositoryClass: BoardFieldRepository::class)]
 #[ORM\Table(name: 'board', uniqueConstraints: [
-    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['game_id', 'x', 'y'])
+    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['gameId', 'x', 'y'])
 ])]
-class Board
+class BoardField
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class Board
 
     #[ORM\ManyToOne(inversedBy: 'board')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $game_id = null;
+    private ?Game $gameId = null;
 
     #[ORM\Column]
     private ?int $x = null;
@@ -31,7 +31,7 @@ class Board
     private ?string $piece = null;
 
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeImmutable $created_at;
+    private \DateTimeImmutable $createdAt;
 
     public function getId(): ?int
     {
@@ -40,12 +40,12 @@ class Board
 
     public function getGameId(): ?Game
     {
-        return $this->game_id;
+        return $this->gameId;
     }
 
-    public function setGameId(?Game $game_id): static
+    public function setGameId(?Game $gameId): static
     {
-        $this->game_id = $game_id;
+        $this->gameId = $gameId;
 
         return $this;
     }

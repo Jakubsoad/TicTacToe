@@ -16,6 +16,15 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+    public function getCurrentGame(): ?Game
+    {
+        return $this->createQueryBuilder('g')
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Game[] Returns an array of Game objects
     //     */
