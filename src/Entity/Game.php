@@ -25,15 +25,25 @@ class Game
     #[ORM\Column(options: ['default' => 0])]
     private int $o_score = 0;
 
+    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private \DateTimeImmutable $created_at;
+
     /**
      * @var Collection<int, Board>
      */
     #[ORM\OneToMany(targetEntity: Board::class, mappedBy: 'game_id')]
     private Collection $board;
 
+    /**
+     * @var Collection<int, Score>
+     */
+    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'game_id')]
+    private Collection $scores;
+
     public function __construct()
     {
         $this->board = new ArrayCollection();
+        $this->scores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +111,36 @@ class Game
             // set the owning side to null (unless already changed)
             if ($board->getGameId() === $this) {
                 $board->setGameId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Score>
+     */
+    public function getScores(): Collection
+    {
+        return $this->scores;
+    }
+
+    public function addScore(Score $score): static
+    {
+        if (!$this->scores->contains($score)) {
+            $this->scores->add($score);
+            $score->setGameId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScore(Score $score): static
+    {
+        if ($this->scores->removeElement($score)) {
+            // set the owning side to null (unless already changed)
+            if ($score->getGameId() === $this) {
+                $score->setGameId(null);
             }
         }
 

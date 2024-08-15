@@ -24,11 +24,14 @@ class Board
     private ?int $x = null;
 
     #[ORM\Column]
-    #[UniqueConstra]
     private ?int $y = null;
 
+    //jtd turn instead of piece?
     #[ORM\Column(length: 1)]
     private ?string $piece = null;
+
+    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private \DateTimeImmutable $created_at;
 
     public function getId(): ?int
     {
