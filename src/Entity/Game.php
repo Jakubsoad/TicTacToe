@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,9 +16,6 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::JSON)]
-    private array $board = [];
-
     #[ORM\Column(length: 1, options: ['default' => 'X'])]
     private string $current_turn = 'X';
 
@@ -24,23 +23,22 @@ class Game
     private int $x_score = 0;
 
     #[ORM\Column(options: ['default' => 0])]
-    private int $y_score = 0;
+    private int $o_score = 0;
+
+    /**
+     * @var Collection<int, Board>
+     */
+    #[ORM\OneToMany(targetEntity: Board::class, mappedBy: 'game_id')]
+    private Collection $board;
+
+    public function __construct()
+    {
+        $this->board = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getBoard(): array
-    {
-        return $this->board;
-    }
-
-    public function setBoard(array $board): static
-    {
-        $this->board = $board;
-
-        return $this;
     }
 
     public function getCurrentTurn(): ?string
@@ -67,14 +65,44 @@ class Game
         return $this;
     }
 
-    public function getYScore(): ?int
+    public function getOScore(): ?int
     {
-        return $this->y_score;
+        return $this->o_score;
     }
 
-    public function setYScore(int $y_score): static
+    public function setOScore(int $o_score): static
     {
-        $this->y_score = $y_score;
+        $this->o_score = $o_score;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Board>
+     */
+    public function getBoard(): Collection
+    {
+        return $this->board;
+    }
+
+    public function addBoard(Board $board): static
+    {
+        if (!$this->board->contains($board)) {
+            $this->board->add($board);
+            $board->setGameId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoard(Board $board): static
+    {
+        if ($this->board->removeElement($board)) {
+            // set the owning side to null (unless already changed)
+            if ($board->getGameId() === $this) {
+                $board->setGameId(null);
+            }
+        }
 
         return $this;
     }

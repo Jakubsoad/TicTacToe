@@ -90,11 +90,3 @@ Status code 200 OK if the request succeeded, with the following response body:
     }
 
 Where currentTurn is either x or o, indicating who should start.
-
-# Logic
-
-1. szkielet api
-2. prosty docker
-   3. baza danych - score, current turn?, current board? 
-3. 4 endpointy
-4. 
