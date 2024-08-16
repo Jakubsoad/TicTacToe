@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\Piece;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
@@ -16,8 +16,8 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50, options: ['default' => 'X'])]
-    private string $currentTurn = 'X';
+    #[ORM\Column]
+    private Piece $currentTurn = Piece::X;
 
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeImmutable $createdAt;
@@ -28,57 +28,17 @@ class Game
     #[ORM\OneToMany(targetEntity: BoardField::class, mappedBy: 'gameId')]
     private Collection $boardFields;
 
-    /**
-     * @var Collection<int, Score>
-     */
-    #[ORM\OneToMany(targetEntity: Score::class, mappedBy: 'gameId')]
-    private Collection $scores;
+    #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
+    private ?Score $score = null;
 
     public function __construct()
     {
         $this->boardFields = new ArrayCollection();
-        $this->scores = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCurrentTurn(): ?string
-    {
-        return $this->currentTurn;
-    }
-
-    public function setCurrentTurn(string $currentTurn): static
-    {
-        $this->currentTurn = $currentTurn;
-
-        return $this;
-    }
-
-    public function getXScore(): ?int
-    {
-        return $this->xScore;
-    }
-
-    public function setXScore(int $xScore): static
-    {
-        $this->xScore = $xScore;
-
-        return $this;
-    }
-
-    public function getOScore(): ?int
-    {
-        return $this->oScore;
-    }
-
-    public function setOScore(int $oScore): static
-    {
-        $this->oScore = $oScore;
-
-        return $this;
     }
 
     /**
@@ -101,70 +61,31 @@ class Game
         return $boardArray;
     }
 
-    public function addBoard(BoardField $board): static
+    public function getTurn(): Piece
     {
-        if (!$this->board->contains($board)) {
-            $this->board->add($board);
-            $board->setGameId($this);
+        if ($this->score !== null) {
+            $turn = Piece::NONE;
+        } else {
+            $turn = $this->boardFields->count() % 2 === 0 ? Piece::X : Piece::O;
         }
 
-        return $this;
+        return $turn;
     }
 
-    public function removeBoard(BoardField $board): static
+    public function getScore(): ?Score
     {
-        if ($this->board->removeElement($board)) {
-            // set the owning side to null (unless already changed)
-            if ($board->getGameId() === $this) {
-                $board->setGameId(null);
-            }
+        return $this->score;
+    }
+
+    public function setScore(Score $score): static
+    {
+        // set the owning side of the relation if necessary
+        if ($score->getGame() !== $this) {
+            $score->setGame($this);
         }
 
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Score>
-     */
-    public function getScores(): Collection
-    {
-        return $this->scores;
-    }
-
-    public function getXScores()
-    {
-        return $this->scores->filter(fn(Score $score) => $score->getScore() === 'X')->count();
-    }
-
-    public function getOScores()
-    {
-        return $this->scores->filter(fn(Score $score) => $score->getScore() === 'O')->count();
-    }
-
-    public function addScore(Score $score): static
-    {
-        if (!$this->scores->contains($score)) {
-            $this->scores->add($score);
-            $score->setGameId($this);
-        }
+        $this->score = $score;
 
         return $this;
-    }
-
-    public function removeScore(Score $score): static
-    {
-        if ($this->scores->removeElement($score)) {
-            // set the owning side to null (unless already changed)
-            if ($score->getGameId() === $this) {
-                $score->setGameId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTurn(): string
-    {
-        return $this->boardFields->count() % 2 === 0 ? $turn = 'X' : $turn = 'O';
     }
 }

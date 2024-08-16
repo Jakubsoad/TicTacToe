@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\Piece;
 use App\Repository\BoardFieldRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,14 +22,7 @@ class BoardField
     private ?Game $gameId = null;
 
     #[ORM\Column]
-    private ?int $x = null;
-
-    #[ORM\Column]
-    private ?int $y = null;
-
-    //jtd turn instead of piece?
-    #[ORM\Column(length: 1)]
-    private ?string $piece = null;
+    private Piece $piece;
 
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeImmutable $createdAt;
@@ -74,15 +68,13 @@ class BoardField
         return $this;
     }
 
-    public function getPiece(): ?string
+    public function getPiece(): Piece
     {
         return $this->piece;
     }
 
-    public function setPiece(string $piece): static
+    public function setPiece(Piece $piece): void
     {
         $this->piece = $piece;
-
-        return $this;
     }
 }

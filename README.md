@@ -1,3 +1,8 @@
+before finishing:
+- check jtd
+- check for unused code, like getters and setters
+- check for commented code
+
 # ticTacToe
 
 Init

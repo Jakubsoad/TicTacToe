@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Repository\GameRepository;
+use App\Repository\ScoreRepository;
 use App\Service\GameFactory;
+use App\Service\GameVictoryChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,24 +13,27 @@ use Symfony\Component\Routing\Attribute\Route;
 class GameController extends AbstractController
 {
     private GameFactory $gameFactory;
+    private GameVictoryChecker $gameVictoryChecker;
+    private ScoreRepository $scoreRepository;
 
-    public function __construct(GameFactory $gameFactory)
+    public function __construct(GameFactory $gameFactory, GameVictoryChecker $gameVictoryChecker, ScoreRepository $scoreRepository)
     {
         $this->gameFactory = $gameFactory;
+        $this->gameVictoryChecker = $gameVictoryChecker;
+        $this->scoreRepository = $scoreRepository;
     }
 
     #[Route('/', name: 'game', methods: [Request::METHOD_GET])]
     public function index(): JsonResponse
     {
         $currentGame = $this->gameFactory->getOrCreateGame();
-        $board = $currentGame->getBoard();
-        $xScore = $currentGame->getXScores();
-        $oScore = $currentGame->getOScores();
-        $turn = $currentGame->getTurn();
-        $victory = $currentGame->getVictory();
 
         return $this->json([
-
+            'currentGame' => $currentGame,
+            'board' => $currentGame->getBoard(),
+            'score' => $this->scoreRepository->getSummaryScores(),
+            'turn' => $currentGame->getTurn(),
+            'victory' => $currentGame->getScore()->getWinner(),
         ]);
     }
 
