@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BoardFieldRepository::class)]
 #[ORM\Table(name: 'board', uniqueConstraints: [
-    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['gameId', 'x', 'y'])
+    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['gameId', 'x', 'y']),
 ])]
 class BoardField
 {
@@ -19,51 +19,41 @@ class BoardField
 
     #[ORM\ManyToOne(inversedBy: 'board')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $gameId = null;
+    private ?Game $game = null;
 
     #[ORM\Column]
     private Piece $piece;
 
+    #[ORM\Column]
+    private int $xPosition;
+
+    #[ORM\Column]
+    private int $yPosition;
+
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeImmutable $createdAt;
+
+    public function __construct(Game $game, Piece $piece, int $xPosition, int $yPosition)
+    {
+        $this->game = $game;
+        $this->xPosition = $xPosition;
+        $this->yPosition = $yPosition;
+        $this->piece = $piece;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getGameId(): ?Game
+    public function getGame(): ?Game
     {
-        return $this->gameId;
+        return $this->game;
     }
 
-    public function setGameId(?Game $gameId): static
+    public function setGame(?Game $game): static
     {
-        $this->gameId = $gameId;
-
-        return $this;
-    }
-
-    public function getX(): ?int
-    {
-        return $this->x;
-    }
-
-    public function setX(int $x): static
-    {
-        $this->x = $x;
-
-        return $this;
-    }
-
-    public function getY(): ?int
-    {
-        return $this->y;
-    }
-
-    public function setY(int $y): static
-    {
-        $this->y = $y;
+        $this->game = $game;
 
         return $this;
     }
@@ -76,5 +66,15 @@ class BoardField
     public function setPiece(Piece $piece): void
     {
         $this->piece = $piece;
+    }
+
+    public function getYPosition(): int
+    {
+        return $this->yPosition;
+    }
+
+    public function getXPosition(): int
+    {
+        return $this->xPosition;
     }
 }

@@ -61,16 +61,6 @@ class Game
         return $boardArray;
     }
 
-    public function getTurn(): Piece
-    {
-        if ($this->score !== null) {
-            $turn = Piece::NONE;
-        } else {
-            $turn = $this->boardFields->count() % 2 === 0 ? Piece::X : Piece::O;
-        }
-
-        return $turn;
-    }
 
     public function getScore(): ?Score
     {
@@ -87,5 +77,10 @@ class Game
         $this->score = $score;
 
         return $this;
+    }
+
+    public function getBoardFields(): Collection
+    {
+        return $this->boardFields;
     }
 }
