@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 ])]
 class BoardField
 {
+    public const BOARD_SIZE = 3;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

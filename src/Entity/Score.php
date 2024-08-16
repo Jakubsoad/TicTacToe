@@ -24,6 +24,12 @@ class Score
     #[ORM\JoinColumn(nullable: false)]
     private ?Game $game = null;
 
+    public function __construct(Game $game, Piece $winner)
+    {
+        $this->game = $game;
+        $this->winner = $winner;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

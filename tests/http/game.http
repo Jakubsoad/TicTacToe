@@ -1,0 +1,2 @@
+GET http://localhost:8082/game HTTP/1.1
+###

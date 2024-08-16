@@ -46,11 +46,13 @@ class Game
      */
     public function getBoard(): array
     {
-        $boardArray = [
-            ['', '', ''],
-            ['', '', ''],
-            ['', '', '']
-        ];
+        $boardArray = [];
+
+        for ($i = 0; $i <= BoardField::BOARD_SIZE; $i++) {
+            for ($j = 0; $j <= BoardField::BOARD_SIZE; $j++) {
+                $boardArray[$i][$j] = Piece::NONE;
+            }
+        }
 
         foreach ($this->boardFields as $boardField) {
             $x = $boardField->getX();
@@ -60,7 +62,6 @@ class Game
 
         return $boardArray;
     }
-
 
     public function getScore(): ?Score
     {

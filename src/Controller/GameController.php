@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Score;
 use App\Enum\Piece;
 use App\Repository\ScoreRepository;
 use App\Service\GameFactory;
 use App\Service\GameResponseService;
 use App\Service\PieceService;
-use App\Service\GameVictoryChecker;
+use App\Service\GameVictoryService;
 use App\Service\TurnChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,11 +19,11 @@ class GameController extends AbstractController
 {
     public function __construct(
         private GameFactory         $gameFactory,
-        private GameVictoryChecker  $gameVictoryChecker,
+        private GameVictoryService  $gameVictoryService,
         private ScoreRepository     $scoreRepository,
         private TurnChecker         $turnChecker,
         private GameResponseService $gameResponseService,
-        private PieceService $pieceService
+        private PieceService        $pieceService
     )
     {
     }
@@ -68,6 +69,9 @@ class GameController extends AbstractController
             $y
         );
 
+        $winner = $this->gameVictoryService->checkVictory($currentGame);
+        $this->gameVictoryService->saveScore($currentGame, $winner);
+
         return $this->json(
             $this->gameResponseService->createGameResponse($currentGame)
         );
@@ -77,6 +81,17 @@ class GameController extends AbstractController
     #[Route('/restart', name: 'restart', methods: [Request::METHOD_POST])]
     public function restart(): JsonResponse
     {
+        //check if game is over
+        $currentGame = $this->gameFactory->getOrCreateGame();
+
+        if ($currentGame->getScore() !== null) {
+            $this->gameFactory->createGame();
+        }
+
+        //create new game
+
+        //or just create new game
+
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/GameController.php',
