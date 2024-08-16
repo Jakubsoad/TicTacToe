@@ -41,9 +41,6 @@ class Game
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, BoardField>
-     */
     public function getBoard(): array
     {
         $boardArray = [];
@@ -66,18 +63,6 @@ class Game
     public function getScore(): ?Score
     {
         return $this->score;
-    }
-
-    public function setScore(Score $score): static
-    {
-        // set the owning side of the relation if necessary
-        if ($score->getGame() !== $this) {
-            $score->setGame($this);
-        }
-
-        $this->score = $score;
-
-        return $this;
     }
 
     public function getBoardFields(): Collection

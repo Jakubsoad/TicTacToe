@@ -3,16 +3,15 @@
 namespace App\Entity;
 
 use App\Enum\Piece;
-use App\Repository\BoardFieldRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BoardFieldRepository::class)]
+#[ORM\Entity]
 #[ORM\Table(name: 'board', uniqueConstraints: [
     new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['gameId', 'x', 'y']),
 ])]
 class BoardField
 {
-    public const BOARD_SIZE = 3;
+    public const int BOARD_SIZE = 3;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -48,35 +47,8 @@ class BoardField
         return $this->id;
     }
 
-    public function getGame(): ?Game
-    {
-        return $this->game;
-    }
-
-    public function setGame(?Game $game): static
-    {
-        $this->game = $game;
-
-        return $this;
-    }
-
     public function getPiece(): Piece
     {
         return $this->piece;
-    }
-
-    public function setPiece(Piece $piece): void
-    {
-        $this->piece = $piece;
-    }
-
-    public function getYPosition(): int
-    {
-        return $this->yPosition;
-    }
-
-    public function getXPosition(): int
-    {
-        return $this->xPosition;
     }
 }

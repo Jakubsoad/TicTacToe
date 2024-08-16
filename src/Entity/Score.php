@@ -22,7 +22,7 @@ class Score
 
     #[ORM\OneToOne(inversedBy: 'score', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $game = null;
+    private Game $game;
 
     public function __construct(Game $game, Piece $winner)
     {
@@ -38,48 +38,5 @@ class Score
     public function getWinner(): Piece
     {
         return $this->winner;
-    }
-
-    public function setWinner(Piece $winner): static
-    {
-        $this->winner = $winner;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getGameId(): ?Game
-    {
-        return $this->gameId;
-    }
-
-    public function setGameId(?Game $gameId): static
-    {
-        $this->gameId = $gameId;
-
-        return $this;
-    }
-
-    public function getGame(): ?Game
-    {
-        return $this->game;
-    }
-
-    public function setGame(Game $game): static
-    {
-        $this->game = $game;
-
-        return $this;
     }
 }

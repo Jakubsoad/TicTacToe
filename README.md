@@ -1,5 +1,4 @@
 before finishing:
-- check jtd
 - check for unused code, like getters and setters
 - check for commented code
 
@@ -9,7 +8,7 @@ I changed few things prior to the requirements:
  - Requirements says implicitly that there should be just one game. I think is better approach to have game entity which refers to exactly one game. This way you could have multiple games at the same time in the future
  - Requirements says that currentTurn in response should be either x or o, but I also added empty string, which means that game is finished - this way I am also reusing Piece enum
  - Requirements says, that score should be stored only after POST /restart, but I think it's better to store it after every move
- - DELETE / Requirements says to return currentTurn, but I think this is the better way to go. If you want to start a game, you can just make a GET request to the root path
+ - In DELETE / requirements says to return currentTurn, but I think it's better to return success message about removing games. If you want to start a new game, just request GET /
 
 Init
 

@@ -12,6 +12,7 @@ use App\Service\TurnChecker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class GameController extends AbstractController
@@ -46,19 +47,19 @@ class GameController extends AbstractController
         $y = (int)$request->request->get('y');
 
         if (!$piece) {
-            return $this->json(['error' => 'Invalid piece value'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['error' => 'Invalid piece value'], Response::HTTP_BAD_REQUEST);
         }
 
         if ($x < 0 || $x > 2 || $y < 0 || $y > 2) {
-            return $this->json(['error' => 'Invalid coordinates'], JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json(['error' => 'Invalid coordinates'], Response::HTTP_BAD_REQUEST);
         }
 
         if ($this->pieceService->isPiecePositionConflict($currentGame, $x, $y)) {
-            return $this->json(['error' => 'Invalid move'], JsonResponse::HTTP_CONFLICT);
+            return $this->json(['error' => 'Invalid move'], Response::HTTP_CONFLICT);
         }
 
         if ($this->turnChecker->getTurn($currentGame) !== $piece) {
-            return $this->json(['error' => 'Is turn of ' . $piece->value], JsonResponse::HTTP_NOT_ACCEPTABLE);
+            return $this->json(['error' => 'Is turn of ' . $piece->value], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         $this->pieceService->placePiece(

@@ -18,7 +18,7 @@ class GameResponseService
             'currentGame' => $game,
             'board' => $game->getBoard(),
             'score' => $this->scoreRepository->getSummaryScores(),
-            'turn' => $this->turnChecker->getTurn($game), // jtd check if game will refresh from placepiece
+            'turn' => $this->turnChecker->getTurn($game),
             'victory' => $game->getScore()->getWinner(),
         ];
     }
