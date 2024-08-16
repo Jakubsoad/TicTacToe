@@ -7,7 +7,7 @@ use App\Enum\Piece;
 
 class TurnChecker
 {
-    public function getTurn(Game $game): Piece
+    public function getTurn(Game $game): string
     {
         if ($game->getScore() !== null) {
             $turn = Piece::NONE;
@@ -15,6 +15,6 @@ class TurnChecker
             $turn = $game->getBoardFields()->count() % 2 === 0 ? Piece::X : Piece::O;
         }
 
-        return $turn;
+        return $turn->value;
     }
 }

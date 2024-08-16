@@ -22,13 +22,11 @@ class ScoreRepository extends ServiceEntityRepository
                 "SUM(CASE WHEN s.winner = :x THEN 1 ELSE 0 END) as xWins",
                 'SUM(CASE WHEN s.winner = :o THEN 1 ELSE 0 END) as oWins'
             )
-            ->setParameters(new ArrayCollection([
-                'x' => Piece::X,
-                'o' => Piece::O,
-            ]))
+            ->setParameter('x', Piece::X->value)
+            ->setParameter('o', Piece::O->value)
             ->getQuery();
 
-        $result = $query->getSingleResult();
+        $result = $query->getOneOrNullResult();
 
         return [
             'x' => (int) $result['xWins'],

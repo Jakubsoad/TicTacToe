@@ -38,11 +38,11 @@ class GameController extends AbstractController
         );
     }
 
-    #[Route('/', name: 'place_piece', methods: [Request::METHOD_POST])]
-    public function placePiece(Request $request): JsonResponse
+    #[Route('/{piece}', name: 'place_piece', methods: [Request::METHOD_POST])]
+    public function placePiece(Request $request, string $piece): JsonResponse
     {
         $currentGame = $this->gameFactory->getOrCreateGame();
-        $piece = Piece::tryFrom($request->request->get('piece'));
+        $piece = Piece::tryFrom($piece);
         $x = (int)$request->request->get('x');
         $y = (int)$request->request->get('y');
 

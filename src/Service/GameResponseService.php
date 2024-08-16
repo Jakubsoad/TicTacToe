@@ -15,11 +15,10 @@ class GameResponseService
     public function createGameResponse(Game $game): array
     {
         return [
-            'currentGame' => $game,
             'board' => $game->getBoard(),
             'score' => $this->scoreRepository->getSummaryScores(),
             'turn' => $this->turnChecker->getTurn($game),
-            'victory' => $game->getScore()->getWinner(),
+            'victory' => $game->getScore()?->getWinner(),
         ];
     }
 }

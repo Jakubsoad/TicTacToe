@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'board', uniqueConstraints: [
-    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['gameId', 'x', 'y']),
+    new ORM\UniqueConstraint(name: 'unique_game_x_y', columns: ['game', 'x', 'y']),
 ])]
 class BoardField
 {
@@ -20,7 +20,7 @@ class BoardField
 
     #[ORM\ManyToOne(inversedBy: 'board')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Game $game = null;
+    private Game $game;
 
     #[ORM\Column]
     private Piece $piece;
@@ -40,6 +40,7 @@ class BoardField
         $this->xPosition = $xPosition;
         $this->yPosition = $yPosition;
         $this->piece = $piece;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

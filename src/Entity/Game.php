@@ -25,7 +25,7 @@ class Game
     /**
      * @var Collection<int, BoardField>
      */
-    #[ORM\OneToMany(targetEntity: BoardField::class, mappedBy: 'gameId', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: BoardField::class, mappedBy: 'game', cascade: ['persist', 'remove'])]
     private Collection $boardFields;
 
     #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
@@ -34,6 +34,7 @@ class Game
     public function __construct()
     {
         $this->boardFields = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -45,8 +46,8 @@ class Game
     {
         $boardArray = [];
 
-        for ($i = 0; $i <= BoardField::BOARD_SIZE; $i++) {
-            for ($j = 0; $j <= BoardField::BOARD_SIZE; $j++) {
+        for ($i = 0; $i < BoardField::BOARD_SIZE; $i++) {
+            for ($j = 0; $j < BoardField::BOARD_SIZE; $j++) {
                 $boardArray[$i][$j] = Piece::NONE;
             }
         }

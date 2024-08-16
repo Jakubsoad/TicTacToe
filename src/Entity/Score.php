@@ -28,6 +28,7 @@ class Score
     {
         $this->game = $game;
         $this->winner = $winner;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
