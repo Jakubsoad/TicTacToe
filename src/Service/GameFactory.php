@@ -22,16 +22,18 @@ class GameFactory
         $currentGame = $this->gameRepository->getCurrentGame();
 
         if ($currentGame === null) {
-            $this->createGame();
+            $currentGame = $this->createGame();
         }
 
         return $currentGame;
     }
 
-    public function createGame()
+    public function createGame(): Game
     {
         $newGame = new Game();
         $this->entityManager->persist($newGame);
         $this->entityManager->flush();
+
+        return $newGame;
     }
 }

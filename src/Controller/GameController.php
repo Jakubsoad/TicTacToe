@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Score;
 use App\Enum\Piece;
-use App\Repository\ScoreRepository;
 use App\Service\GameFactory;
 use App\Service\GameResponseService;
+use App\Service\GameService;
 use App\Service\PieceService;
 use App\Service\GameVictoryService;
 use App\Service\TurnChecker;
@@ -20,10 +19,10 @@ class GameController extends AbstractController
     public function __construct(
         private GameFactory         $gameFactory,
         private GameVictoryService  $gameVictoryService,
-        private ScoreRepository     $scoreRepository,
         private TurnChecker         $turnChecker,
         private GameResponseService $gameResponseService,
-        private PieceService        $pieceService
+        private PieceService        $pieceService,
+        private GameService         $gameService,
     )
     {
     }
@@ -81,29 +80,18 @@ class GameController extends AbstractController
     #[Route('/restart', name: 'restart', methods: [Request::METHOD_POST])]
     public function restart(): JsonResponse
     {
-        //check if game is over
-        $currentGame = $this->gameFactory->getOrCreateGame();
+        $game = $this->gameFactory->createGame();
 
-        if ($currentGame->getScore() !== null) {
-            $this->gameFactory->createGame();
-        }
-
-        //create new game
-
-        //or just create new game
-
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/GameController.php',
-        ]);
+        return $this->json(
+            $this->gameResponseService->createGameResponse($game)
+        );
     }
 
     #[Route('/', name: 'delete_game', methods: [Request::METHOD_DELETE])]
     public function deleteGame(): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/GameController.php',
-        ]);
+        $this->gameService->removeAllGames();
+
+        return $this->json(['message' => 'All games deleted']);
     }
 }

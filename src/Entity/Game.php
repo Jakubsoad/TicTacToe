@@ -25,7 +25,7 @@ class Game
     /**
      * @var Collection<int, BoardField>
      */
-    #[ORM\OneToMany(targetEntity: BoardField::class, mappedBy: 'gameId')]
+    #[ORM\OneToMany(targetEntity: BoardField::class, mappedBy: 'gameId', cascade: ['persist', 'remove'])]
     private Collection $boardFields;
 
     #[ORM\OneToOne(mappedBy: 'game', cascade: ['persist', 'remove'])]
