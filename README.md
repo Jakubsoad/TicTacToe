@@ -2,6 +2,9 @@
 
 This API allows you to play Tic-Tac-Toe games. It supports tracks scores and manages game state.
 
+## Approach
+The project is implemented using the Symfony framework, which provides a solid foundation for web applications. The decision to use Symfony is based on its extensive support for modularity, maintainability, and scalability, which are crucial for building a robust API.
+
 ## Installation
 
 To run this project, you need to have Docker installed on your system.
