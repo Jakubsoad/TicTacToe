@@ -76,10 +76,10 @@ Places the piece (either x or o) in the requested grid coordinates:
       "y": number
     }
 
-Where x and y can be from 0 to `FIELD_SIZE` - 1 (default `FIELD_SIZE` is 3).
+Where x and y can be from 0 to `FIELD_SIZE` - 1. Default `FIELD_SIZE` is 3 and can be modified in BoardField class.
 
 ##### Response body
-Status code 409 Conflict if a piece is being placed where a piece already is.
+Status code 409 Conflict if a piece is being placed where a piece already is:
 
 Status code 406 Not acceptable if a piece is being placed out of turn.
 
@@ -127,7 +127,7 @@ Status code 200 OK if the request succeeded, with the following response body:
 
 Where piece is either "x", "o" or "" (an empty string).
 
-### Reset Everything
+### Delete all games
 
 Clears the board and resets all scores.
 
