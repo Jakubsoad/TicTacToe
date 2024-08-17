@@ -3,22 +3,24 @@
 namespace App\Service;
 
 use App\Entity\Game;
+use App\Enum\Piece;
 use App\Repository\ScoreRepository;
 
 class GameResponseService
 {
     public function __construct(
         private ScoreRepository $scoreRepository,
-        private TurnChecker $turnChecker
     ) {}
 
     public function createGameResponse(Game $game): array
     {
+        $victory = $game->getScore()?->getWinner() ?? Piece::NONE;
+
         return [
             'board' => $game->getBoard(),
             'score' => $this->scoreRepository->getSummaryScores(),
-            'turn' => $this->turnChecker->getTurn($game),
-            'victory' => $game->getScore()?->getWinner(),
+            'turn' => $victory !== Piece::NONE ? Piece::NONE : $game->getCurrentTurn(),
+            'victory' => $victory,
         ];
     }
 }

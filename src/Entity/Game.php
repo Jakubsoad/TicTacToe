@@ -53,8 +53,8 @@ class Game
         }
 
         foreach ($this->boardFields as $boardField) {
-            $x = $boardField->getX();
-            $y = $boardField->getY();
+            $x = $boardField->getXPosition();
+            $y = $boardField->getYPosition();
             $boardArray[$x][$y] = $boardField->getPiece();
         }
 
@@ -69,5 +69,15 @@ class Game
     public function getBoardFields(): Collection
     {
         return $this->boardFields;
+    }
+
+    public function getCurrentTurn(): Piece
+    {
+        return $this->currentTurn;
+    }
+
+    public function setCurrentTurn(Piece $currentTurn): void
+    {
+        $this->currentTurn = $currentTurn;
     }
 }

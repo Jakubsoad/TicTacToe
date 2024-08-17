@@ -99,14 +99,15 @@ class GameVictoryService
         return Piece::NONE;
     }
 
-    public function saveScore(Game $game, ?Piece $winner): void
+    public function saveScore(Game $game, Piece $winner): void
     {
-        if ($winner === null) {
+        if ($winner === Piece::NONE) {
             return;
         }
 
         $score = new Score($game, $winner);
         $this->entityManager->persist($score);
         $this->entityManager->flush();
+        $this->entityManager->refresh($game);
     }
 }

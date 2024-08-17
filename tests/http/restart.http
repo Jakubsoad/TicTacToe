@@ -33,43 +33,10 @@ Content-Type: application/json
     });
 %}
 ###
-POST http://localhost:8082/place/x HTTP/1.1
-Content-Type: application/json
+POST http://localhost:8082/restart HTTP/1.1
 
-{
-  "x": 0,
-  "y": 0
-}
 > {%
     client.test("Request body", function() {
-        client.assert(response.body['turn'] === 'O', "Wrong turn response");
+        client.assert(JSON.stringify(response.body['board']) === '[["","",""],["","",""],["","",""]]', "Game didn't restart");
     });
 %}
-###
-POST http://localhost:8082/place/o HTTP/1.1
-Content-Type: application/json
-
-{
-  "x": 1,
-  "y": 2
-}
-> {%
-    client.test("Request body", function() {
-        client.assert(response.body['turn'] === 'X', "Wrong turn response");
-    });
-%}
-###
-POST http://localhost:8082/place/x HTTP/1.1
-Content-Type: application/json
-
-{
-  "x": 2,
-  "y": 2
-}
-> {%
-    client.test("Winner", function() {
-        client.assert(response.body['victory'] === 'X', "Wrong winner");
-        client.assert(response.body['turn'] === '', "Wrong turn");
-    });
-%}
-###

@@ -52,4 +52,14 @@ class BoardField
     {
         return $this->piece;
     }
+
+    public function getXPosition(): int
+    {
+        return $this->xPosition;
+    }
+
+    public function getYPosition(): int
+    {
+        return $this->yPosition;
+    }
 }

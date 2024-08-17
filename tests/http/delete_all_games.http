@@ -1,0 +1,7 @@
+DELETE http://localhost:8082/ HTTP/1.1
+
+> {%
+    client.test("Request body", function() {
+        client.assert(response.body['message'] === 'All games and scores have been reset', "Delete error");
+    });
+%}

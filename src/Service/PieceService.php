@@ -31,7 +31,10 @@ class PieceService
     public function placePiece(Game $game, Piece $piece, int $x, int $y): void
     {
         $boardField = new BoardField($game, $piece, $x, $y);
+        $game->setCurrentTurn($piece === Piece::X ? Piece::O : Piece::X);
         $this->entityManager->persist($boardField);
+        $this->entityManager->persist($game);
         $this->entityManager->flush();
+        $this->entityManager->refresh($game);
     }
 }
