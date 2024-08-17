@@ -18,7 +18,7 @@ This will start the application and all necessary services.
 ### Notes:
 - PHPUnit is not installed in this project setup.
 - The application is running on port 8082.
-##### Running HTTP Tests
+### Running HTTP Tests
 If you want to run the HTTP tests located in the `tests/http` directory and you're not familiar with JetBrains HTTP Client, please refer to the official documentation:
 
 https://www.jetbrains.com/help/phpstorm/http-client-in-product-code-editor.html
